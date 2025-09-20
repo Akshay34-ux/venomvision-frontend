@@ -6,6 +6,7 @@ import { HandlerCard } from "@/components/HandlerCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import "leaflet/dist/leaflet.css";
+
 // Mock handlers (can be fetched from backend later)
 const mockHandlers = [
   {
@@ -49,6 +50,23 @@ const mockHandlers = [
 const Index = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [coords, setCoords] = useState<[number, number] | null>(null);
+
+  // Capture GPS
+  const handleGetLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          setCoords([pos.coords.latitude, pos.coords.longitude]);
+        },
+        (err) => {
+          console.error("Geolocation error:", err);
+          // fallback → Bangalore
+          setCoords([12.9716, 77.5946]);
+        }
+      );
+    }
+  };
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -59,8 +77,13 @@ const Index = () => {
     try {
       const formData = new FormData();
       formData.append("image", file);
+      if (coords) {
+        formData.append("gps", `${coords[0]},${coords[1]}`);
+      }
 
-      const res = await fetch("http://localhost:5001/api/identify", {
+      // ✅ Use env var instead of hardcoded localhost
+      const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5001";
+      const res = await fetch(`${baseUrl}/api/identify`, {
         method: "POST",
         body: formData,
       });
@@ -69,7 +92,13 @@ const Index = () => {
       console.log("Backend Response:", data);
 
       if (data.success) {
-        navigate("/identify-result", { state: { result: data.result, image: URL.createObjectURL(file) } });
+        navigate("/identify-result", {
+          state: {
+            result: data.result,
+            image: URL.createObjectURL(file),
+            gps: coords,
+          },
+        });
       } else {
         navigate("/identify-result", { state: { result: null } });
       }
@@ -131,7 +160,10 @@ const Index = () => {
               {/* Capture Button */}
               <Button
                 size="lg"
-                onClick={() => document.getElementById("cameraInput")?.click()}
+                onClick={() => {
+                  handleGetLocation();
+                  document.getElementById("cameraInput")?.click();
+                }}
                 className="h-16 bg-gradient-primary hover:opacity-90 transition-opacity"
               >
                 <Camera className="h-6 w-6 mr-3" />
@@ -142,20 +174,21 @@ const Index = () => {
               </Button>
 
               {/* Upload Button */}
-              <label className="block">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="h-16 w-full border-2 border-primary/30 hover:border-primary/50"
-                  onClick={() => document.getElementById("fileInput")?.click()}
-                >
-                  <Upload className="h-6 w-6 mr-3" />
-                  <div className="text-left">
-                    <div className="font-semibold">Upload Photo</div>
-                    <div className="text-sm text-muted-foreground">From gallery</div>
-                  </div>
-                </Button>
-              </label>
+              <Button
+                size="lg"
+                variant="outline"
+                className="h-16 w-full border-2 border-primary/30 hover:border-primary/50"
+                onClick={() => {
+                  handleGetLocation();
+                  document.getElementById("fileInput")?.click();
+                }}
+              >
+                <Upload className="h-6 w-6 mr-3" />
+                <div className="text-left">
+                  <div className="font-semibold">Upload Photo</div>
+                  <div className="text-sm text-muted-foreground">From gallery</div>
+                </div>
+              </Button>
             </div>
 
             {loading && (
