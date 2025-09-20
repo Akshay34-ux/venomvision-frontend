@@ -81,7 +81,11 @@ export default function ReportBite() {
   const handleSubmit = async () => {
     try {
       setLoading(true);
-      await axios.post("http://localhost:5001/api/report-bite", form);
+
+      // ✅ Use env variable for API base URL
+      const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5001";
+      await axios.post(`${baseUrl}/api/report-bite`, form);
+
       alert("✅ Report submitted successfully!");
       navigate("/");
     } catch (err) {
@@ -93,76 +97,115 @@ export default function ReportBite() {
   };
 
   return (
-    <div className="p-4">
+    <div className="min-h-screen bg-background">
       <Header title="Report Snake Bite" tagline="Help us save lives" />
 
-      <Card className="mt-4">
-        <CardHeader>
-          <CardTitle>Victim Details</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          <Input
-            name="victimName"
-            placeholder="Victim Name"
-            value={form.victimName}
-            onChange={handleChange}
-          />
-          <Input
-            name="age"
-            placeholder="Age"
-            value={form.age}
-            onChange={handleChange}
-          />
-          <Input
-            name="symptoms"
-            placeholder="Symptoms"
-            value={form.symptoms}
-            onChange={handleChange}
-          />
-          <Input
-            name="timeOfBite"
-            placeholder="Time of Bite"
-            value={form.timeOfBite}
-            onChange={handleChange}
-          />
-          <Input
-            name="location"
-            placeholder="Location Description"
-            value={form.location}
-            onChange={handleChange}
-          />
-          <div className="flex gap-2">
+      <div className="container mx-auto px-4 py-6 max-w-3xl">
+        {/* Form Card */}
+        <Card className="shadow-md border rounded-xl">
+          <CardHeader>
+            <CardTitle className="text-xl font-semibold text-foreground">
+              📝 Victim Details
+            </CardTitle>
+            <p className="text-sm text-muted-foreground">
+              Please provide accurate details to help responders
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-4">
             <Input
-              name="gps"
-              placeholder="GPS Coordinates"
-              value={form.gps}
-              readOnly
+              name="victimName"
+              placeholder="Victim Name"
+              value={form.victimName}
+              onChange={handleChange}
             />
-            <Button onClick={handleGetLocation} variant="outline">
-              📍 Get Location
+            <Input
+              name="age"
+              placeholder="Age"
+              value={form.age}
+              onChange={handleChange}
+            />
+            <Input
+              name="symptoms"
+              placeholder="Symptoms"
+              value={form.symptoms}
+              onChange={handleChange}
+            />
+            <Input
+              name="timeOfBite"
+              placeholder="Time of Bite (e.g., 2:30 PM)"
+              value={form.timeOfBite}
+              onChange={handleChange}
+            />
+            <Input
+              name="location"
+              placeholder="Location Description"
+              value={form.location}
+              onChange={handleChange}
+            />
+            <div className="flex gap-2">
+              <Input
+                name="gps"
+                placeholder="GPS Coordinates"
+                value={form.gps}
+                readOnly
+              />
+              <Button onClick={handleGetLocation} variant="outline">
+                📍 Get Location
+              </Button>
+            </div>
+            <Button
+              onClick={handleSubmit}
+              disabled={loading}
+              className="w-full bg-gradient-primary text-primary-foreground"
+            >
+              {loading ? "Submitting..." : "🚑 Submit Report"}
             </Button>
-          </div>
-          <Button onClick={handleSubmit} disabled={loading}>
-            {loading ? "Submitting..." : "Submit Report"}
-          </Button>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
 
-      {/* Show map if coords are available */}
-      {coords && (
-        <div className="mt-6">
-          <MapContainer
-            center={coords}
-            zoom={14}
-            style={{ height: "300px", width: "100%" }}
-          >
-            <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-            <Marker position={coords}>
-              <Popup>📍 Snake Bite Location</Popup>
-            </Marker>
-          </MapContainer>
-        </div>
-      )}
+        {/* Map Section */}
+        {coords ? (
+          <Card className="mt-6 shadow-md border rounded-xl overflow-hidden">
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold">
+                📍 Bite Location
+              </CardTitle>
+              <p className="text-sm text-muted-foreground">
+                Pin dropped at the reported coordinates
+              </p>
+            </CardHeader>
+            <CardContent className="p-0">
+              <MapContainer
+                center={coords}
+                zoom={14}
+                className="h-[300px] md:h-[400px] w-full rounded-b-xl"
+              >
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                />
+                <Marker position={coords}>
+                  <Popup>
+                    <div className="text-sm font-medium">
+                      📍 Bite reported here
+                    </div>
+                  </Popup>
+                </Marker>
+              </MapContainer>
+            </CardContent>
+          </Card>
+        ) : (
+          <Card className="mt-6 shadow-md border rounded-xl">
+            <CardContent className="p-6 text-center text-muted-foreground">
+              Waiting for GPS location...
+              <br />
+              <span className="text-xs">
+                Click “📍 Get Location” above to capture
+              </span>
+            </CardContent>
+          </Card>
+        )}
+      </div>
     </div>
   );
 }
