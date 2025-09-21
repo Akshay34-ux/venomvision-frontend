@@ -40,5 +40,22 @@
     "getLocation": "📍 Get Location",
     "submit": "Submit Report",
     "submitting": "Submitting..."
+  },
+  
+  "knowledgeHub": {
+    "title": "Knowledge Hub",
+    "tagline": "Learn. Stay Safe. Respect Snakes.",
+    "searchPlaceholder": "Search snakes or myths...",
+    "snakeInfoTitle": "Snake Information",
+    "snakeInfoDesc": "Learn about different snake species, their characteristics, and safety information.",
+    "mythBustersTitle": "Myth Busters",
+    "mythBustersDesc": "Separate fact from fiction with science-based information about snakes.",
+    "noSnakes": "No snakes found matching \"{{term}}\"",
+    "noMyths": "No myths found matching \"{{term}}\"",
+    "labels": {
+      "myth": "Myth",
+      "truth": "Truth"
+    }
   }
+
 }
