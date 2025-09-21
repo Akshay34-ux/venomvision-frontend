@@ -1,4 +1,4 @@
-import { Shield, MapPin, Smartphone, Bug, Globe } from "lucide-react";
+import { Shield, MapPin, Bug, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +13,7 @@ import {
 
 export default function LandingPage() {
   const navigate = useNavigate();
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation(); // ✅ use t here
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
@@ -40,9 +40,11 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="bg-gradient-primary text-primary-foreground py-16">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">🐍 VenomVision</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+            {t("landing.title")}
+          </h1>
           <p className="text-lg md:text-xl max-w-2xl mx-auto opacity-90 mb-6">
-            Instantly identify snakes, report bites, and connect with certified handlers — all in one app.
+            {t("landing.subtitle")}
           </p>
           <div className="flex justify-center gap-4">
             <Button
@@ -50,7 +52,7 @@ export default function LandingPage() {
               className="bg-card text-foreground hover:bg-accent"
               onClick={() => navigate("/index")}
             >
-              Get Started
+              {t("landing.getStarted")}
             </Button>
             <Button
               variant="outline"
@@ -58,7 +60,7 @@ export default function LandingPage() {
               className="bg-card text-foreground hover:bg-accent"
               onClick={() => navigate("/HandlerLogin")}
             >
-              Login as Handler
+              {t("landing.loginHandler")}
             </Button>
           </div>
         </div>
@@ -70,9 +72,11 @@ export default function LandingPage() {
           <Card className="shadow-soft">
             <CardContent className="p-6 text-center">
               <Bug className="h-10 w-10 mx-auto mb-4 text-primary" />
-              <h3 className="font-semibold mb-2">Identify Snakes</h3>
+              <h3 className="font-semibold mb-2">
+                {t("landing.features.identifyTitle")}
+              </h3>
               <p className="text-muted-foreground">
-                Upload or capture an image to instantly identify snake species.
+                {t("landing.features.identifyDesc")}
               </p>
             </CardContent>
           </Card>
@@ -80,9 +84,11 @@ export default function LandingPage() {
           <Card className="shadow-soft">
             <CardContent className="p-6 text-center">
               <Shield className="h-10 w-10 mx-auto mb-4 text-destructive" />
-              <h3 className="font-semibold mb-2">Report Bites</h3>
+              <h3 className="font-semibold mb-2">
+                {t("landing.features.reportTitle")}
+              </h3>
               <p className="text-muted-foreground">
-                Submit bite incidents with GPS to get emergency guidance fast.
+                {t("landing.features.reportDesc")}
               </p>
             </CardContent>
           </Card>
@@ -90,9 +96,11 @@ export default function LandingPage() {
           <Card className="shadow-soft">
             <CardContent className="p-6 text-center">
               <MapPin className="h-10 w-10 mx-auto mb-4 text-success" />
-              <h3 className="font-semibold mb-2">Find Handlers</h3>
+              <h3 className="font-semibold mb-2">
+                {t("landing.features.findTitle")}
+              </h3>
               <p className="text-muted-foreground">
-                Connect with nearby certified snake handlers for rescue.
+                {t("landing.features.findDesc")}
               </p>
             </CardContent>
           </Card>
@@ -100,7 +108,7 @@ export default function LandingPage() {
       </section>
 
       <footer className="py-6 text-center text-muted-foreground text-sm">
-        © {new Date().getFullYear()} VenomVision. All rights reserved.
+        © {new Date().getFullYear()} VenomVision. {t("landing.footer")}
       </footer>
     </div>
   );
