@@ -56,7 +56,46 @@
       "myth": "Myth",
       "truth": "Truth"
     }
+  },
+  
+  "handlerSignup": {
+    "title": "Handler Registration",
+    "tagline": "Join VenomVision as a certified handler",
+    "name": "Full Name",
+    "phone": "Phone Number",
+    "experience": "Experience (e.g. 10 years)",
+    "specialization": "Specialization (e.g. Cobra rescue)",
+    "location": "Location Description",
+    "gps": "GPS Coordinates",
+    "pickLocation": "Get Location",
+    "photo": "Upload Profile Picture",
+    "submit": "Register",
+    "submitting": "Registering...",
+    "success": "Handler registered successfully!",
+    "failed": "Registration failed. Try again.",
+    "selectedLocation": "Selected Location"
+  },
+  
+  
+  "landing": {
+    "title": "🐍 VenomVision",
+    "subtitle": "Instantly identify snakes, report bites, and connect with certified handlers — all in one app.",
+    "getStarted": "Get Started",
+    "loginHandler": "Login as Handler",
+    "features": {
+      "identifyTitle": "Identify Snakes",
+      "identifyDesc": "Upload or capture an image to instantly identify snake species.",
+      "reportTitle": "Report Bites",
+      "reportDesc": "Submit bite incidents with GPS to get emergency guidance fast.",
+      "findTitle": "Find Handlers",
+      "findDesc": "Connect with nearby certified snake handlers for rescue."
+    },
+    "footer": "All rights reserved."
   }
+}
+
   
 
-}
+
+  
+
