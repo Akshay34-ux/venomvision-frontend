@@ -27,9 +27,9 @@ export default function LandingPage() {
               variant="outline"
               size="lg"
               className="bg-card text-foreground hover:bg-accent"
-              onClick={() => navigate("/signup-handler")}
+              onClick={() => navigate("/HandlerLogin")}
             >
-              Register as Handler
+              Login as Handler
           </Button>
           </div>
         </div>
