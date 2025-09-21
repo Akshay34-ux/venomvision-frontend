@@ -30,9 +30,16 @@ L.Icon.Default.mergeOptions({
 // --- RecenterMap: re-center map when coords change ---
 function RecenterMap({ coords }: { coords: [number, number] }) {
   const map = useMap();
+
   useEffect(() => {
-    if (coords) map.setView(coords, 14);
+    if (coords) {
+      map.flyTo(coords, 14, {
+        animate: true,
+        duration: 1.5, // smooth animation
+      });
+    }
   }, [coords, map]);
+
   return null;
 }
 
