@@ -260,7 +260,7 @@ const Index = () => {
           <Button
             size="lg"
             className="bg-gradient-primary text-primary-foreground hover:opacity-90"
-            onClick={() => navigate("/signup-handler")}
+            onClick={() => navigate("/register-handler")}
           >
             <UserPlus className="h-5 w-5 mr-2" />
             Register as Handler
