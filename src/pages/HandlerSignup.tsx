@@ -1,107 +1,117 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
+import { useToast } from "@/components/ui/use-toast";
+import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 
 export default function HandlerSignup() {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
     phone: "",
+    email: "",
     location: "",
+    gps: "",
     experience: "",
     specialization: "",
+    status: "",
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const handleGetLocation = () => {
+    if (!navigator.geolocation) {
+      alert("❌ Geolocation not supported in this browser");
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const lat = pos.coords.latitude.toFixed(6);
+        const lng = pos.coords.longitude.toFixed(6);
+        setForm((prev) => ({ ...prev, gps: `${lat}, ${lng}` }));
+        toast({ title: "📍 Location Captured", description: `Lat: ${lat}, Lng: ${lng}` });
+      },
+      () => alert("⚠️ Unable to fetch location"),
+      { enableHighAccuracy: true }
+    );
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Handler registered:", form);
+    setLoading(true);
 
-    // TODO: send to backend API
-    alert("✅ Handler registered successfully!");
-    navigate("/"); // Redirect back home after signup
+    // Simulate API call
+    setTimeout(() => {
+      setLoading(false);
+      toast({
+        title: "✅ Registration Submitted",
+        description: "Our team will verify your details and approve your profile.",
+      });
+      navigate("/");
+    }, 1500);
   };
 
   return (
     <div className="min-h-screen bg-background">
-      <Header title="Handler Signup" tagline="Join VenomVision as a certified snake handler" />
+      <Header title="Handler Registration" tagline="Join our mission to save lives" />
 
-      <div className="container mx-auto px-4 py-10 max-w-2xl">
-        <Card className="shadow-medium">
+      <div className="container mx-auto px-4 py-8 max-w-2xl">
+        <Card className="shadow-strong">
           <CardHeader>
-            <CardTitle className="text-2xl font-bold">Register as a Handler</CardTitle>
+            <CardTitle className="text-2xl text-center">Register as a Snake Handler</CardTitle>
           </CardHeader>
-
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <Label htmlFor="name">Full Name</Label>
-                <Input
-                  id="name"
-                  name="name"
-                  placeholder="Enter your full name"
-                  value={form.name}
-                  onChange={handleChange}
-                  required
-                />
+            <form className="space-y-4" onSubmit={handleSubmit}>
+              <Input name="name" placeholder="Full Name" value={form.name} onChange={handleChange} required />
+              <Input type="tel" name="phone" placeholder="Phone Number" value={form.phone} onChange={handleChange} required />
+              <Input type="email" name="email" placeholder="Email (optional)" value={form.email} onChange={handleChange} />
+              <Input name="location" placeholder="Location (City/District)" value={form.location} onChange={handleChange} />
+
+              {/* GPS Section */}
+              <div className="flex gap-2">
+                <Input name="gps" placeholder="GPS Coordinates" value={form.gps} readOnly />
+                <Button type="button" onClick={handleGetLocation} variant="outline">
+                  📍 Get Location
+                </Button>
               </div>
 
-              <div>
-                <Label htmlFor="phone">Phone Number</Label>
-                <Input
-                  id="phone"
-                  name="phone"
-                  placeholder="+91-XXXXXXXXXX"
-                  value={form.phone}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+              <Input type="number" name="experience" placeholder="Years of Experience" value={form.experience} onChange={handleChange} required />
 
-              <div>
-                <Label htmlFor="location">Location</Label>
-                <Input
-                  id="location"
-                  name="location"
-                  placeholder="City / Area"
-                  value={form.location}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+              <Select onValueChange={(val) => setForm({ ...form, specialization: val })}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Specialization" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="cobra">Cobra Specialist</SelectItem>
+                  <SelectItem value="viper">Viper Specialist</SelectItem>
+                  <SelectItem value="non-venomous">Non-venomous</SelectItem>
+                  <SelectItem value="all">All Species</SelectItem>
+                </SelectContent>
+              </Select>
 
-              <div>
-                <Label htmlFor="experience">Experience</Label>
-                <Input
-                  id="experience"
-                  name="experience"
-                  placeholder="e.g. 5 years"
-                  value={form.experience}
-                  onChange={handleChange}
-                />
-              </div>
+              <Select onValueChange={(val) => setForm({ ...form, status: val })}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Availability Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="available">Available</SelectItem>
+                  <SelectItem value="busy">Busy</SelectItem>
+                  <SelectItem value="on-call">On Call</SelectItem>
+                </SelectContent>
+              </Select>
 
-              <div>
-                <Label htmlFor="specialization">Specialization</Label>
-                <Input
-                  id="specialization"
-                  name="specialization"
-                  placeholder="e.g. Cobra handling, rescue operations"
-                  value={form.specialization}
-                  onChange={handleChange}
-                />
-              </div>
+              <Input type="file" accept="image/*,.pdf" required />
 
-              <Button type="submit" className="w-full bg-primary text-primary-foreground">
-                Register
+              <Button type="submit" className="w-full bg-gradient-primary text-primary-foreground" disabled={loading}>
+                {loading ? "Submitting..." : "Submit Registration"}
               </Button>
             </form>
           </CardContent>
