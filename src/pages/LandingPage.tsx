@@ -69,6 +69,9 @@ export default function LandingPage() {
           </Card>
         </div>
       </section>
+      <footer className="py-6 text-center text-muted-foreground text-sm">
+        © {new Date().getFullYear()} VenomVision. All rights reserved.
+      </footer>
     </div>
   );
 }
