@@ -22,7 +22,6 @@ export default function LandingPage() {
         <div className="flex items-center space-x-2">
           <Globe className="h-4 w-4 text-muted-foreground" />
           <Select
-            value={i18n.language || "en"}
             onValueChange={(lng) => i18n.changeLanguage(lng)}
           >
             <SelectTrigger className="w-32">
