@@ -9,6 +9,7 @@ import ReportBite from "./pages/ReportBite";
 import KnowledgeHub from "./pages/KnowledgeHub";
 import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
+import LandingPage from "./pages/LandingPage";  // ✅ updated import
 
 const queryClient = new QueryClient();
 
@@ -19,13 +20,17 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
+          {/* ✅ LandingPage is now the default route */}
+          <Route path="/" element={<LandingPage />} />
+
+          <Route path="/home" element={<Index />} />
           <Route path="/identify/:snakeId" element={<IdentificationResult />} />
           <Route path="/report-bite" element={<ReportBite />} />
           <Route path="/knowledge-hub" element={<KnowledgeHub />} />
           <Route path="/identify-result" element={<IdentificationResult />} />
           <Route path="/admin" element={<AdminDashboard />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+
+          {/* Catch-all */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
