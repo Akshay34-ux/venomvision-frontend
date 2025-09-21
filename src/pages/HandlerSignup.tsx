@@ -8,6 +8,9 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
+// i18n
+import { useTranslation } from "react-i18next";
+
 // UI
 import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
@@ -25,6 +28,7 @@ L.Icon.Default.mergeOptions({
 
 export default function HandlerSignup() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [form, setForm] = useState({
     name: "",
@@ -86,11 +90,11 @@ export default function HandlerSignup() {
       const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5001";
       await axios.post(`${baseUrl}/api/handler-signup`, formData);
 
-      alert("✅ Handler registered successfully!");
+      alert("✅ " + t("handlerSignup.success", { defaultValue: "Handler registered successfully!" }));
       navigate("/");
     } catch (err) {
       console.error(err);
-      alert("❌ Registration failed. Try again.");
+      alert("❌ " + t("handlerSignup.failed", { defaultValue: "Registration failed. Try again." }));
     } finally {
       setLoading(false);
     }
@@ -98,11 +102,16 @@ export default function HandlerSignup() {
 
   return (
     <div className="p-4">
-      <Header title="Handler Registration" tagline="Join VenomVision as a certified handler" />
+      {/* ✅ Added language toggle */}
+      <Header
+        title={t("handlerSignup.title")}
+        tagline={t("handlerSignup.tagline", { defaultValue: "Join VenomVision as a certified handler" })}
+        showLanguageToggle={true}
+      />
 
       <Card className="mt-4 shadow-strong max-w-3xl mx-auto">
         <CardHeader>
-          <CardTitle>Register as Snake Handler</CardTitle>
+          <CardTitle>{t("handlerSignup.title")}</CardTitle>
         </CardHeader>
 
         <CardContent className="space-y-4">
@@ -110,25 +119,25 @@ export default function HandlerSignup() {
           <div className="grid md:grid-cols-2 gap-4">
             <Input
               name="name"
-              placeholder="Full Name"
+              placeholder={t("handlerSignup.name")}
               value={form.name}
               onChange={handleChange}
             />
             <Input
               name="phone"
-              placeholder="Phone Number"
+              placeholder={t("handlerSignup.phone")}
               value={form.phone}
               onChange={handleChange}
             />
             <Input
               name="experience"
-              placeholder="Experience (e.g. 10 years)"
+              placeholder={t("handlerSignup.experience")}
               value={form.experience}
               onChange={handleChange}
             />
             <Input
               name="specialization"
-              placeholder="Specialization (e.g. Cobra rescue)"
+              placeholder={t("handlerSignup.specialization")}
               value={form.specialization}
               onChange={handleChange}
             />
@@ -138,21 +147,21 @@ export default function HandlerSignup() {
           <div className="space-y-2">
             <Input
               name="location"
-              placeholder="Location Description"
+              placeholder={t("handlerSignup.location")}
               value={form.location}
               onChange={handleChange}
             />
             <div className="flex gap-2">
-              <Input name="gps" placeholder="GPS Coordinates" value={form.gps} readOnly />
+              <Input name="gps" placeholder={t("handlerSignup.gps", { defaultValue: "GPS Coordinates" })} value={form.gps} readOnly />
               <Button onClick={handleGetLocation} variant="outline">
-                📍 Get Location
+                📍 {t("handlerSignup.pickLocation")}
               </Button>
             </div>
           </div>
 
           {/* Profile Image */}
           <div className="space-y-2">
-            <label className="font-medium">Upload Profile Picture</label>
+            <label className="font-medium">{t("handlerSignup.photo")}</label>
             <input type="file" accept="image/*" onChange={handleImageUpload} />
             {preview && (
               <img
@@ -169,7 +178,7 @@ export default function HandlerSignup() {
             disabled={loading}
             className="w-full bg-primary text-primary-foreground"
           >
-            {loading ? "Registering..." : "Register"}
+            {loading ? t("handlerSignup.submitting", { defaultValue: "Registering..." }) : t("handlerSignup.submit")}
           </Button>
         </CardContent>
       </Card>
@@ -183,7 +192,7 @@ export default function HandlerSignup() {
         >
           <TileLayer url="https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png" />
           <Marker position={coords}>
-            <Popup>📍 Selected Location</Popup>
+            <Popup>📍 {t("handlerSignup.selectedLocation", { defaultValue: "Selected Location" })}</Popup>
           </Marker>
         </MapContainer>
       </div>
