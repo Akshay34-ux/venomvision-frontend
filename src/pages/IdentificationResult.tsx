@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, AlertTriangle, Phone, MapPin, Heart } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Header } from "@/components/Header";
 import { HandlerCard } from "@/components/HandlerCard";
 import { Button } from "@/components/ui/button";
@@ -36,6 +37,7 @@ const mockHospitals = [
 export default function IdentificationResult() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const snake = location.state?.result || null;
   const imageUrl = location.state?.image || null;
@@ -45,10 +47,12 @@ export default function IdentificationResult() {
       <div className="min-h-screen bg-background">
         <Header showLanguageToggle={false} />
         <div className="container mx-auto px-4 py-8 text-center">
-          <h2 className="text-2xl font-bold text-foreground mb-4">No Result Found</h2>
+          <h2 className="text-2xl font-bold text-foreground mb-4">
+            {t("identifyResult.noResult")}
+          </h2>
           <Button onClick={() => navigate("/")}>
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Home
+            {t("identifyResult.backHome")}
           </Button>
         </div>
       </div>
@@ -66,12 +70,12 @@ export default function IdentificationResult() {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header showLanguageToggle={false} />
+      <Header showLanguageToggle />
 
       <div className="container mx-auto px-4 py-6 max-w-4xl">
         <Button variant="ghost" onClick={() => navigate("/")} className="mb-4">
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to Home
+          {t("identifyResult.backHome")}
         </Button>
 
         <div className="grid md:grid-cols-2 gap-6 mb-6">
@@ -98,16 +102,16 @@ export default function IdentificationResult() {
           <div className="space-y-4">
             <Card className="shadow-soft">
               <CardHeader>
-                <CardTitle className="text-lg">Snake Information</CardTitle>
+                <CardTitle className="text-lg">{t("identifyResult.snakeInfo")}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div>
-                  <h4 className="font-medium text-foreground mb-1">Venom Type</h4>
+                  <h4 className="font-medium text-foreground mb-1">{t("identifyResult.venomType")}</h4>
                   <p className="text-muted-foreground">{snake.venomType}</p>
                 </div>
                 <Separator />
                 <div>
-                  <h4 className="font-medium text-foreground mb-2">Key Traits</h4>
+                  <h4 className="font-medium text-foreground mb-2">{t("identifyResult.traits")}</h4>
                   <ul className="space-y-1">
                     {snake.traits?.map((trait: string, index: number) => (
                       <li key={index} className="text-sm text-muted-foreground">
@@ -118,7 +122,7 @@ export default function IdentificationResult() {
                 </div>
                 <Separator />
                 <div>
-                  <h4 className="font-medium text-foreground mb-1">Habitat</h4>
+                  <h4 className="font-medium text-foreground mb-1">{t("identifyResult.habitat")}</h4>
                   <p className="text-muted-foreground">{snake.habitat}</p>
                 </div>
               </CardContent>
@@ -131,13 +135,13 @@ export default function IdentificationResult() {
             <CardHeader>
               <CardTitle className="text-lg text-destructive flex items-center">
                 <Heart className="h-5 w-5 mr-2" />
-                Emergency First Aid
+                {t("identifyResult.emergency")}
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="bg-destructive/10 p-4 rounded-lg mb-4">
                 <p className="font-medium text-destructive mb-2">
-                  ⚠️ VENOMOUS SNAKE - SEEK IMMEDIATE MEDICAL ATTENTION
+                  {t("identifyResult.venomousWarning")}
                 </p>
               </div>
               <ul className="space-y-2">
@@ -157,7 +161,7 @@ export default function IdentificationResult() {
         <div className="grid md:grid-cols-2 gap-6">
           <Card className="shadow-soft">
             <CardHeader>
-              <CardTitle className="text-lg">Nearest Hospitals</CardTitle>
+              <CardTitle className="text-lg">{t("identifyResult.nearestHospitals")}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {mockHospitals.map((hospital, index) => (
@@ -174,7 +178,7 @@ export default function IdentificationResult() {
                   </div>
                   <Button size="sm" onClick={() => (window.location.href = `tel:${hospital.phone}`)}>
                     <Phone className="h-3 w-3 mr-1" />
-                    Call
+                    {t("identifyResult.call", "Call")}
                   </Button>
                 </div>
               ))}
@@ -183,7 +187,7 @@ export default function IdentificationResult() {
 
           <Card className="shadow-soft">
             <CardHeader>
-              <CardTitle className="text-lg">Snake Handlers</CardTitle>
+              <CardTitle className="text-lg">{t("identifyResult.snakeHandlers")}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {mockHandlers.map((handler) => (
