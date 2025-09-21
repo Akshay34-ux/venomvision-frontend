@@ -25,6 +25,7 @@ export default function LandingPage() {
             value={i18n.language || "en"}
             onValueChange={(lng) => i18n.changeLanguage(lng)}
           >
+            console.log("Landing translations:", t("landing.title"));
             <SelectTrigger className="w-32">
               <SelectValue />
             </SelectTrigger>
