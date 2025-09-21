@@ -24,12 +24,13 @@ export default function LandingPage() {
               Get Started
             </Button>
             <Button
-              size="lg"
               variant="outline"
+              size="lg"
+              className="text-foreground border-primary hover:bg-primary hover:text-primary-foreground"
               onClick={() => navigate("/signup-handler")}
             >
               Register as Handler
-            </Button>
+          </Button>
           </div>
         </div>
       </section>
