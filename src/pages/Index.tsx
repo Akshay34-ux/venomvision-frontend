@@ -49,10 +49,14 @@ const mockHandlers = [
 ];
 
 const Index = () => {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [coords, setCoords] = useState<[number, number] | null>(null);
-  const { t } = useTranslation();
+const navigate = useNavigate();
+const [loading, setLoading] = useState(false);
+const [coords, setCoords] = useState<[number, number] | null>(null);
+const { t, i18n } = useTranslation(); // 👈 include i18n
+
+// Debug logs
+console.log("Current language:", i18n.language);
+console.log("Translation test:", t("home.title"));
 
   // Capture GPS
   const handleGetLocation = () => {
