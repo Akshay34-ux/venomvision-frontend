@@ -43,7 +43,7 @@ export const Header = ({
             <div className="flex items-center space-x-2">
               <Globe className="h-4 w-4 text-muted-foreground" />
               <Select
-                defaultValue={i18n.language || "en"}
+                value={i18n.language || "en"}   // ✅ use value, not defaultValue
                 onValueChange={(lng) => i18n.changeLanguage(lng)}
               >
                 <SelectTrigger className="w-32">
