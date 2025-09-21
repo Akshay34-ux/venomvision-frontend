@@ -24,11 +24,11 @@ export default function LandingPage() {
               Get Started
             </Button>
             <Button
-              variant="outline"
-              size="lg"
-              className="bg-card text-foreground hover:bg-accent"
-              onClick={() => navigate("/handler-login")}
-            >
+            variant="outline"
+            size="lg"
+            className="bg-card text-foreground hover:bg-accent"
+             onClick={() => navigate("/handler-login")}  // ✅ lowercase
+>
               Login as Handler
           </Button>
           </div>
