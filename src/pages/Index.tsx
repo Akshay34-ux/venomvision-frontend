@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Camera, Upload, AlertTriangle, Users, Phone } from "lucide-react";
+import { Camera, Upload, AlertTriangle, Users, Phone, UserPlus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Header } from "@/components/Header";
 import { HandlerCard } from "@/components/HandlerCard";
@@ -49,14 +49,14 @@ const mockHandlers = [
 ];
 
 const Index = () => {
-const navigate = useNavigate();
-const [loading, setLoading] = useState(false);
-const [coords, setCoords] = useState<[number, number] | null>(null);
-const { t, i18n } = useTranslation(); // 👈 include i18n
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [coords, setCoords] = useState<[number, number] | null>(null);
+  const { t, i18n } = useTranslation();
 
-// Debug logs
-console.log("Current language:", i18n.language);
-console.log("Translation test:", t("home.title"));
+  // Debug logs
+  console.log("Current language:", i18n.language);
+  console.log("Translation test:", t("home.title"));
 
   // Capture GPS
   const handleGetLocation = () => {
@@ -120,9 +120,7 @@ console.log("Translation test:", t("home.title"));
       {/* Hero Banner */}
       <section className="bg-gradient-primary text-primary-foreground py-12">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">
-            {t("home.title")}
-          </h1>
+          <h1 className="text-3xl md:text-4xl font-bold mb-4">{t("home.title")}</h1>
           <p className="text-lg md:text-xl opacity-90 max-w-2xl mx-auto">
             {t("home.subtitle")}
           </p>
@@ -214,12 +212,8 @@ console.log("Translation test:", t("home.title"));
                   <AlertTriangle className="h-6 w-6 text-destructive-foreground" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-foreground">
-                    {t("home.reportBite")}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {t("home.reportBiteDesc")}
-                  </p>
+                  <h3 className="font-semibold text-foreground">{t("home.reportBite")}</h3>
+                  <p className="text-sm text-muted-foreground">{t("home.reportBiteDesc")}</p>
                 </div>
               </div>
             </CardContent>
@@ -235,12 +229,8 @@ console.log("Translation test:", t("home.title"));
                   <Users className="h-6 w-6 text-primary-foreground" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-foreground">
-                    {t("home.knowledgeHub")}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">
-                    {t("home.knowledgeHubDesc")}
-                  </p>
+                  <h3 className="font-semibold text-foreground">{t("home.knowledgeHub")}</h3>
+                  <p className="text-sm text-muted-foreground">{t("home.knowledgeHubDesc")}</p>
                 </div>
               </div>
             </CardContent>
@@ -248,7 +238,7 @@ console.log("Translation test:", t("home.title"));
         </div>
 
         {/* Snake Handlers Section */}
-        <Card className="shadow-soft">
+        <Card className="shadow-soft mb-6">
           <CardHeader>
             <CardTitle className="text-xl flex items-center">
               <Phone className="h-5 w-5 mr-2" />
@@ -264,6 +254,18 @@ console.log("Translation test:", t("home.title"));
             </div>
           </CardContent>
         </Card>
+
+        {/* Register as Handler Button */}
+        <div className="text-center mt-8">
+          <Button
+            size="lg"
+            className="bg-gradient-primary text-primary-foreground hover:opacity-90"
+            onClick={() => navigate("/signup-handler")}
+          >
+            <UserPlus className="h-5 w-5 mr-2" />
+            Register as Handler
+          </Button>
+        </div>
       </div>
     </div>
   );
