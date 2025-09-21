@@ -12,6 +12,7 @@ import ReportBite from "./pages/ReportBite";
 import KnowledgeHub from "./pages/KnowledgeHub";
 import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
+
 import HandlerSignup from "./pages/HandlerSignup";
 
 const queryClient = new QueryClient();
