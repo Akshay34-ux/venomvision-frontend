@@ -50,7 +50,7 @@ export default function IdentificationResult() {
           <h2 className="text-2xl font-bold text-foreground mb-4">
             {t("identifyResult.noResult")}
           </h2>
-          <Button onClick={() => navigate("/")}>
+          <Button onClick={() => navigate("/index")}>
             <ArrowLeft className="h-4 w-4 mr-2" />
             {t("identifyResult.backHome")}
           </Button>
