@@ -1,8 +1,7 @@
-// src/pages/HandlerSignup.tsx
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 export default function HandlerSignup() {
   const [form, setForm] = useState({
@@ -11,39 +10,53 @@ export default function HandlerSignup() {
     location: "",
     specialization: "",
   });
-  const [credentials, setCredentials] = useState<{username: string, password: string} | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
-    const username = "handler_" + Math.floor(Math.random() * 10000);
-    const password = Math.random().toString(36).slice(-8);
-    setCredentials({ username, password });
-    // TODO: Save handler + creds to backend
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // ✅ Later: Send data to backend and generate login credentials
+    alert(`Handler registered: ${form.name}`);
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background">
-      <Card className="w-full max-w-md shadow-strong">
+      <Card className="w-full max-w-lg shadow-lg">
         <CardHeader>
-          <CardTitle>Register as Handler</CardTitle>
+          <CardTitle className="text-2xl text-center">Register as Handler</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3">
-          <Input name="name" placeholder="Full Name" onChange={handleChange} />
-          <Input name="phone" placeholder="Phone Number" onChange={handleChange} />
-          <Input name="location" placeholder="Location" onChange={handleChange} />
-          <Input name="specialization" placeholder="Specialization" onChange={handleChange} />
-          <Button onClick={handleSubmit} className="w-full">Register</Button>
-
-          {credentials && (
-            <div className="mt-4 p-3 border rounded bg-muted">
-              <p className="font-semibold">Your login credentials:</p>
-              <p>Username: <span className="font-mono">{credentials.username}</span></p>
-              <p>Password: <span className="font-mono">{credentials.password}</span></p>
-            </div>
-          )}
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <Input
+              name="name"
+              placeholder="Full Name"
+              value={form.name}
+              onChange={handleChange}
+            />
+            <Input
+              name="phone"
+              placeholder="Phone Number"
+              value={form.phone}
+              onChange={handleChange}
+            />
+            <Input
+              name="location"
+              placeholder="Location"
+              value={form.location}
+              onChange={handleChange}
+            />
+            <Input
+              name="specialization"
+              placeholder="Specialization"
+              value={form.specialization}
+              onChange={handleChange}
+            />
+            <Button type="submit" className="w-full">
+              Register
+            </Button>
+          </form>
         </CardContent>
       </Card>
     </div>

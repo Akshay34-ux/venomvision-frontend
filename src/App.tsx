@@ -13,7 +13,10 @@ import KnowledgeHub from "./pages/KnowledgeHub";
 import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
 
+// Handler Flow
 import HandlerSignup from "./pages/HandlerSignup";
+import HandlerLogin from "./pages/HandlerLogin";
+import HandlerDashboard from "./pages/HandlerDashboard";
 
 const queryClient = new QueryClient();
 
@@ -24,21 +27,25 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          {/* Landing page is the entry point */}
+          {/* Landing is entry point */}
           <Route path="/" element={<LandingPage />} />
 
-          {/* Main app routes */}
+          {/* User flow */}
           <Route path="/index" element={<Index />} />
           <Route path="/identify/:snakeId" element={<IdentificationResult />} />
           <Route path="/report-bite" element={<ReportBite />} />
           <Route path="/knowledge-hub" element={<KnowledgeHub />} />
           <Route path="/identify-result" element={<IdentificationResult />} />
+
+          {/* Admin flow */}
           <Route path="/admin" element={<AdminDashboard />} />
 
-          {/* Handler signup */}
-          <Route path="/signup-handler" element={<HandlerSignup />} />
+          {/* Handler flow */}
+          <Route path="/register-handler" element={<HandlerSignup />} />
+          <Route path="/handler-login" element={<HandlerLogin />} />
+          <Route path="/handler-dashboard" element={<HandlerDashboard />} />
 
-          {/* Catch-all 404 */}
+          {/* 404 catch-all */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
