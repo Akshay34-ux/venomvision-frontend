@@ -1,5 +1,5 @@
 import { Shield, Globe } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
 import {
   Select,
   SelectContent,
@@ -14,15 +14,18 @@ interface HeaderProps {
   tagline?: string;
 }
 
-export const Header = ({ 
-  showLanguageToggle = true, 
+export const Header = ({
+  showLanguageToggle = true,
   title = "VenomVision",
-  tagline
+  tagline,
 }: HeaderProps) => {
+  const { i18n } = useTranslation();
+
   return (
     <header className="bg-card border-b border-border shadow-soft">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
+          {/* Logo + Title */}
           <div className="flex items-center space-x-3">
             <div className="bg-gradient-primary p-2 rounded-lg shadow-medium">
               <Shield className="h-6 w-6 text-primary-foreground" />
@@ -35,10 +38,14 @@ export const Header = ({
             </div>
           </div>
 
+          {/* 🌍 Language Toggle */}
           {showLanguageToggle && (
             <div className="flex items-center space-x-2">
               <Globe className="h-4 w-4 text-muted-foreground" />
-              <Select defaultValue="en">
+              <Select
+                defaultValue={i18n.language || "en"}
+                onValueChange={(lng) => i18n.changeLanguage(lng)}
+              >
                 <SelectTrigger className="w-32">
                   <SelectValue />
                 </SelectTrigger>

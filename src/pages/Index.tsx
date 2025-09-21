@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Camera, Upload, AlertTriangle, Users, Phone } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Header } from "@/components/Header";
 import { HandlerCard } from "@/components/HandlerCard";
 import { Button } from "@/components/ui/button";
@@ -51,14 +52,13 @@ const Index = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [coords, setCoords] = useState<[number, number] | null>(null);
+  const { t } = useTranslation();
 
   // Capture GPS
   const handleGetLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          setCoords([pos.coords.latitude, pos.coords.longitude]);
-        },
+        (pos) => setCoords([pos.coords.latitude, pos.coords.longitude]),
         (err) => {
           console.error("Geolocation error:", err);
           // fallback → Bangalore
@@ -81,7 +81,6 @@ const Index = () => {
         formData.append("gps", `${coords[0]},${coords[1]}`);
       }
 
-      // ✅ Use env var instead of hardcoded localhost
       const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5001";
       const res = await fetch(`${baseUrl}/api/identify`, {
         method: "POST",
@@ -118,11 +117,10 @@ const Index = () => {
       <section className="bg-gradient-primary text-primary-foreground py-12">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-3xl md:text-4xl font-bold mb-4">
-            Stay Safe with VenomVision
+            {t("home.title")}
           </h1>
           <p className="text-lg md:text-xl opacity-90 max-w-2xl mx-auto">
-            Instantly identify snakes, access emergency help, and learn life-saving safety practices.
-            Your pocket-sized snake safety expert.
+            {t("home.subtitle")}
           </p>
         </div>
       </section>
@@ -132,11 +130,9 @@ const Index = () => {
         <Card className="mb-8 shadow-strong border-primary/20">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl text-foreground mb-2">
-              Identify Snake Species
+              {t("home.identifyTitle")}
             </CardTitle>
-            <p className="text-muted-foreground">
-              Capture or upload a clear photo of the snake for instant identification
-            </p>
+            <p className="text-muted-foreground">{t("home.identifySubtitle")}</p>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-4">
@@ -168,8 +164,8 @@ const Index = () => {
               >
                 <Camera className="h-6 w-6 mr-3" />
                 <div className="text-left">
-                  <div className="font-semibold">Capture Photo</div>
-                  <div className="text-sm opacity-90">Use camera</div>
+                  <div className="font-semibold">{t("home.capturePhoto")}</div>
+                  <div className="text-sm opacity-90">{t("home.useCamera")}</div>
                 </div>
               </Button>
 
@@ -185,8 +181,8 @@ const Index = () => {
               >
                 <Upload className="h-6 w-6 mr-3" />
                 <div className="text-left">
-                  <div className="font-semibold">Upload Photo</div>
-                  <div className="text-sm text-muted-foreground">From gallery</div>
+                  <div className="font-semibold">{t("home.uploadPhoto")}</div>
+                  <div className="text-sm text-muted-foreground">{t("home.fromGallery")}</div>
                 </div>
               </Button>
             </div>
@@ -195,7 +191,7 @@ const Index = () => {
               <div className="mt-4 text-center">
                 <div className="inline-flex items-center text-primary">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary mr-2"></div>
-                  Analyzing image...
+                  {t("home.analyzing", "Analyzing image...")}
                 </div>
               </div>
             )}
@@ -214,8 +210,12 @@ const Index = () => {
                   <AlertTriangle className="h-6 w-6 text-destructive-foreground" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-foreground">Report Snake Bite</h3>
-                  <p className="text-sm text-muted-foreground">Emergency response & first aid</p>
+                  <h3 className="font-semibold text-foreground">
+                    {t("home.reportBite")}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {t("home.reportBiteDesc")}
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -231,8 +231,12 @@ const Index = () => {
                   <Users className="h-6 w-6 text-primary-foreground" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-foreground">Knowledge Hub</h3>
-                  <p className="text-sm text-muted-foreground">Learn & bust myths</p>
+                  <h3 className="font-semibold text-foreground">
+                    {t("home.knowledgeHub")}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {t("home.knowledgeHubDesc")}
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -244,11 +248,9 @@ const Index = () => {
           <CardHeader>
             <CardTitle className="text-xl flex items-center">
               <Phone className="h-5 w-5 mr-2" />
-              Available Snake Handlers
+              {t("home.handlers")}
             </CardTitle>
-            <p className="text-muted-foreground">
-              Connect with certified snake handlers in your area
-            </p>
+            <p className="text-muted-foreground">{t("home.handlersDesc")}</p>
           </CardHeader>
           <CardContent>
             <div className="grid md:grid-cols-2 gap-4">

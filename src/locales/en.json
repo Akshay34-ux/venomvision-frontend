@@ -1,0 +1,44 @@
+{
+  "home": {
+    "title": "Stay Safe with VenomVision",
+    "subtitle": "Instantly identify snakes, access emergency help, and learn life-saving practices. Your pocket-sized snake safety expert.",
+    "identifyTitle": "Identify Snake Species",
+    "identifySubtitle": "Capture or upload a clear photo of the snake for instant identification",
+    "capturePhoto": "Capture Photo",
+    "useCamera": "Use Camera",
+    "uploadPhoto": "Upload Photo",
+    "fromGallery": "From Gallery",
+    "reportBite": "Report Snake Bite",
+    "reportBiteDesc": "Emergency response & first aid",
+    "knowledgeHub": "Knowledge Hub",
+    "knowledgeHubDesc": "Learn & bust myths",
+    "handlers": "Available Snake Handlers",
+    "handlersDesc": "Connect with certified snake handlers in your area",
+    "analyzing": "Analyzing image..."
+  },
+  "identifyResult": {
+    "noResult": "No Result Found",
+    "backHome": "Back to Home",
+    "snakeInfo": "Snake Information",
+    "venomType": "Venom Type",
+    "traits": "Key Traits",
+    "habitat": "Habitat",
+    "emergency": "Emergency First Aid",
+    "venomousWarning": "⚠️ VENOMOUS SNAKE - SEEK IMMEDIATE MEDICAL ATTENTION",
+    "nearestHospitals": "Nearest Hospitals",
+    "snakeHandlers": "Snake Handlers"
+  },
+  "reportBite": {
+    "title": "Report Snake Bite",
+    "tagline": "Help us save lives",
+    "victimName": "Victim Name",
+    "age": "Age",
+    "symptoms": "Symptoms",
+    "timeOfBite": "Time of Bite",
+    "location": "Location Description",
+    "gps": "GPS Coordinates",
+    "getLocation": "📍 Get Location",
+    "submit": "Submit Report",
+    "submitting": "Submitting..."
+  }
+}
