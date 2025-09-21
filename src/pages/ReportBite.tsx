@@ -2,8 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
-// i18n
 import { useTranslation } from "react-i18next";
 
 // Leaflet + React-Leaflet
@@ -15,7 +13,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet-geosearch/dist/geosearch.css";
 import { GeoSearchControl, OpenStreetMapProvider } from "leaflet-geosearch";
 
-// UI components
+// UI
 import { Header } from "../components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -28,6 +26,15 @@ L.Icon.Default.mergeOptions({
   iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
   shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
 });
+
+// --- RecenterMap: re-center map when coords change ---
+function RecenterMap({ coords }: { coords: [number, number] }) {
+  const map = useMap();
+  useEffect(() => {
+    if (coords) map.setView(coords, 14);
+  }, [coords, map]);
+  return null;
+}
 
 // --- SearchControl ---
 function SearchControl({
@@ -84,7 +91,6 @@ function SearchControl({
           gps: `${lat}, ${lng}`,
           location: loc.label ?? loc.name ?? p.location,
         }));
-        map.setView([lat, lng], 14);
       }
     };
 
@@ -113,7 +119,7 @@ export default function ReportBite() {
     gps: "",
   });
 
-  const [coords, setCoords] = useState<[number, number]>([12.9716, 77.5946]);
+  const [coords, setCoords] = useState<[number, number]>([12.9716, 77.5946]); // default Bangalore
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -142,10 +148,10 @@ export default function ReportBite() {
       setLoading(true);
       const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5001";
       await axios.post(`${baseUrl}/api/report-bite`, form);
-      alert("✅ " + t("reportBite.submitted"));
+      alert("✅ " + t("reportBite.submit"));
       navigate("/");
     } catch {
-      alert("❌ " + t("reportBite.failed"));
+      alert("❌ Failed to submit report");
     } finally {
       setLoading(false);
     }
@@ -188,6 +194,8 @@ export default function ReportBite() {
 
       <div className="mt-6 rounded-lg overflow-hidden shadow-soft">
         <MapContainer center={coords} zoom={14} style={{ height: 420, width: "100%" }}>
+          {/* ✅ auto recenter & search both work */}
+          <RecenterMap coords={coords} />
           <SearchControl setCoords={setCoords} setForm={setForm} />
           <TileLayer url="https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png" />
           <Marker position={coords}>
