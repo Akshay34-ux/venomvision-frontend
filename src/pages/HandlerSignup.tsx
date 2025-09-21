@@ -20,8 +20,7 @@ import { Input } from "@/components/ui/input";
 // Fix default marker icons
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl:
-    "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
+  iconRetinaUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
   iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
   shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
 });
@@ -50,7 +49,7 @@ export default function HandlerSignup() {
 
   const handleGetLocation = () => {
     if (!navigator.geolocation) {
-      alert("❌ Geolocation not supported");
+      alert(t("handlerSignup.geoNotSupported", { defaultValue: "❌ Geolocation not supported" }));
       return;
     }
     navigator.geolocation.getCurrentPosition(
@@ -60,7 +59,7 @@ export default function HandlerSignup() {
         setCoords([lat, lng]);
         setForm((p) => ({ ...p, gps: `${lat}, ${lng}` }));
       },
-      () => alert("⚠️ Unable to fetch location"),
+      () => alert(t("handlerSignup.geoError", { defaultValue: "⚠️ Unable to fetch location" })),
       { enableHighAccuracy: true }
     );
   };
@@ -77,15 +76,8 @@ export default function HandlerSignup() {
     try {
       setLoading(true);
       const formData = new FormData();
-      formData.append("name", form.name);
-      formData.append("phone", form.phone);
-      formData.append("experience", form.experience);
-      formData.append("specialization", form.specialization);
-      formData.append("location", form.location);
-      formData.append("gps", form.gps);
-      if (profileImage) {
-        formData.append("profileImage", profileImage);
-      }
+      Object.entries(form).forEach(([key, value]) => formData.append(key, value));
+      if (profileImage) formData.append("profileImage", profileImage);
 
       const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5001";
       await axios.post(`${baseUrl}/api/handler-signup`, formData);
@@ -102,94 +94,57 @@ export default function HandlerSignup() {
 
   return (
     <div className="p-4">
-      {/* ✅ Added language toggle */}
+      {/* ✅ Header with language toggle */}
       <Header
-        title={t("handlerSignup.title")}
+        title={t("handlerSignup.title", { defaultValue: "Handler Registration" })}
         tagline={t("handlerSignup.tagline", { defaultValue: "Join VenomVision as a certified handler" })}
         showLanguageToggle={true}
       />
 
       <Card className="mt-4 shadow-strong max-w-3xl mx-auto">
         <CardHeader>
-          <CardTitle>{t("handlerSignup.title")}</CardTitle>
+          <CardTitle>{t("handlerSignup.formTitle", { defaultValue: "Register as Snake Handler" })}</CardTitle>
         </CardHeader>
 
         <CardContent className="space-y-4">
           {/* Basic Info */}
           <div className="grid md:grid-cols-2 gap-4">
-            <Input
-              name="name"
-              placeholder={t("handlerSignup.name")}
-              value={form.name}
-              onChange={handleChange}
-            />
-            <Input
-              name="phone"
-              placeholder={t("handlerSignup.phone")}
-              value={form.phone}
-              onChange={handleChange}
-            />
-            <Input
-              name="experience"
-              placeholder={t("handlerSignup.experience")}
-              value={form.experience}
-              onChange={handleChange}
-            />
-            <Input
-              name="specialization"
-              placeholder={t("handlerSignup.specialization")}
-              value={form.specialization}
-              onChange={handleChange}
-            />
+            <Input name="name" placeholder={t("handlerSignup.name", { defaultValue: "Full Name" })} value={form.name} onChange={handleChange} />
+            <Input name="phone" placeholder={t("handlerSignup.phone", { defaultValue: "Phone Number" })} value={form.phone} onChange={handleChange} />
+            <Input name="experience" placeholder={t("handlerSignup.experience", { defaultValue: "Experience (e.g. 10 years)" })} value={form.experience} onChange={handleChange} />
+            <Input name="specialization" placeholder={t("handlerSignup.specialization", { defaultValue: "Specialization (e.g. Cobra rescue)" })} value={form.specialization} onChange={handleChange} />
           </div>
 
           {/* Location */}
           <div className="space-y-2">
-            <Input
-              name="location"
-              placeholder={t("handlerSignup.location")}
-              value={form.location}
-              onChange={handleChange}
-            />
+            <Input name="location" placeholder={t("handlerSignup.location", { defaultValue: "Location Description" })} value={form.location} onChange={handleChange} />
             <div className="flex gap-2">
               <Input name="gps" placeholder={t("handlerSignup.gps", { defaultValue: "GPS Coordinates" })} value={form.gps} readOnly />
               <Button onClick={handleGetLocation} variant="outline">
-                📍 {t("handlerSignup.pickLocation")}
+                📍 {t("handlerSignup.pickLocation", { defaultValue: "Get Location" })}
               </Button>
             </div>
           </div>
 
           {/* Profile Image */}
           <div className="space-y-2">
-            <label className="font-medium">{t("handlerSignup.photo")}</label>
+            <label className="font-medium">{t("handlerSignup.photo", { defaultValue: "Upload Profile Picture" })}</label>
             <input type="file" accept="image/*" onChange={handleImageUpload} />
             {preview && (
-              <img
-                src={preview}
-                alt="Preview"
-                className="mt-2 w-32 h-32 object-cover rounded-lg shadow"
-              />
+              <img src={preview} alt="Preview" className="mt-2 w-32 h-32 object-cover rounded-lg shadow" />
             )}
           </div>
 
           {/* Submit */}
-          <Button
-            onClick={handleSubmit}
-            disabled={loading}
-            className="w-full bg-primary text-primary-foreground"
-          >
-            {loading ? t("handlerSignup.submitting", { defaultValue: "Registering..." }) : t("handlerSignup.submit")}
+          <Button onClick={handleSubmit} disabled={loading} className="w-full bg-primary text-primary-foreground">
+            {loading ? t("handlerSignup.submitting", { defaultValue: "Registering..." }) : t("handlerSignup.submit", { defaultValue: "Register" })}
           </Button>
         </CardContent>
       </Card>
 
       {/* Map */}
       <div className="mt-6 rounded-lg overflow-hidden shadow-soft max-w-3xl mx-auto">
-        <MapContainer
-          center={coords}
-          zoom={14}
-          style={{ height: 400, width: "100%" }}
-        >
+        <MapContainer center={coords} zoom={14} style={{ height: 400, width: "100%" }}>
           <TileLayer url="https://cartodb-basemaps-a.global.ssl.fastly.net/light_all/{z}/{x}/{y}{r}.png" />
           <Marker position={coords}>
             <Popup>📍 {t("handlerSignup.selectedLocation", { defaultValue: "Selected Location" })}</Popup>
