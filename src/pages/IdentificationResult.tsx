@@ -73,7 +73,7 @@ export default function IdentificationResult() {
       <Header showLanguageToggle />
 
       <div className="container mx-auto px-4 py-6 max-w-4xl">
-        <Button variant="ghost" onClick={() => navigate("/")} className="mb-4">
+        <Button variant="ghost" onClick={() => navigate("/index")} className="mb-4">
           <ArrowLeft className="h-4 w-4 mr-2" />
           {t("identifyResult.backHome")}
         </Button>
