@@ -13,7 +13,10 @@ import {
 
 export default function LandingPage() {
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation(); // ✅ use t here
+  const { t, i18n } = useTranslation();
+
+  // ✅ debugging log in JS, not inside JSX
+  console.log("Landing translations:", t("landing.title"));
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
@@ -25,7 +28,6 @@ export default function LandingPage() {
             value={i18n.language || "en"}
             onValueChange={(lng) => i18n.changeLanguage(lng)}
           >
-            console.log("Landing translations:", t("landing.title"));
             <SelectTrigger className="w-32">
               <SelectValue />
             </SelectTrigger>
