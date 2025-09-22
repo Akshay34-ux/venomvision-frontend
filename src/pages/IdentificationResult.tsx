@@ -154,6 +154,17 @@ export default function IdentificationResult() {
                   </li>
                 ))}
               </ul>
+
+              {/* 🚨 Add Report Bite Button here */}
+              <div className="text-center mt-6">
+                <Button
+                  size="lg"
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  onClick={() => navigate("/report-bite")}
+                >
+                  🆘 {t("identifyResult.reportBite", { defaultValue: "Report Bite" })}
+                </Button>
+              </div>
             </CardContent>
           </Card>
         )}
