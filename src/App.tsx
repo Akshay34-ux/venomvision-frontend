@@ -18,6 +18,7 @@ import HandlerSignup from "./pages/HandlerSignup";
 import HandlerLogin from "./pages/HandlerLogin";
 import HandlerDashboard from "./pages/HandlerDashboard";
 
+
 const queryClient = new QueryClient();
 
 const App = () => (
