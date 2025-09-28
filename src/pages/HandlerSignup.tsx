@@ -2,16 +2,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-
-import { Header } from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
 export default function HandlerSignup() {
   const navigate = useNavigate();
-  const { t } = useTranslation();
 
   const [form, setForm] = useState({
     name: "",
@@ -30,20 +26,25 @@ export default function HandlerSignup() {
   };
 
   const handleSubmit = async () => {
+    const baseUrl = import.meta.env.VITE_API_URL;
+
+    if (!baseUrl) {
+      alert("❌ Backend server not configured. Please set VITE_API_URL.");
+      return;
+    }
+
     try {
       setLoading(true);
-      const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5001";
-
       const res = await axios.post(`${baseUrl}/api/handlers/register`, form);
 
       if (res.data.success) {
         alert("✅ Registration submitted. Waiting for admin approval.");
-        navigate("/"); // or redirect to landing
+        navigate("/");
       } else {
         alert("❌ Registration failed.");
       }
     } catch (err: any) {
-      console.error(err);
+      console.error("Registration error:", err);
       alert("⚠️ Error submitting registration. Try again.");
     } finally {
       setLoading(false);
@@ -51,31 +52,24 @@ export default function HandlerSignup() {
   };
 
   return (
-    <div className="p-4">
-      <Header
-        title={t("handlerSignup.title")}
-        tagline={t("handlerSignup.tagline", { defaultValue: "Join VenomVision as a certified handler" })}
-        showLanguageToggle={true}
-      />
-
-      <Card className="mt-4 shadow-strong max-w-3xl mx-auto">
+    <div className="p-6 flex justify-center">
+      <Card className="w-full max-w-2xl shadow-lg">
         <CardHeader>
-          <CardTitle>{t("handlerSignup.title")}</CardTitle>
+          <CardTitle>Register as Snake Handler</CardTitle>
         </CardHeader>
-
         <CardContent className="space-y-4">
-          <div className="grid md:grid-cols-2 gap-4">
-            <Input name="name" placeholder={t("handlerSignup.name")} value={form.name} onChange={handleChange} />
-            <Input name="email" placeholder={t("handlerSignup.email")} value={form.email} onChange={handleChange} />
-            <Input name="phone" placeholder={t("handlerSignup.phone")} value={form.phone} onChange={handleChange} />
-            <Input name="experience" placeholder={t("handlerSignup.experience")} value={form.experience} onChange={handleChange} />
-            <Input name="specialization" placeholder={t("handlerSignup.specialization")} value={form.specialization} onChange={handleChange} />
-            <Input name="location" placeholder={t("handlerSignup.location")} value={form.location} onChange={handleChange} />
-            <Input name="gps" placeholder={t("handlerSignup.gps")} value={form.gps} onChange={handleChange} />
+          <div className="grid grid-cols-2 gap-4">
+            <Input name="name" placeholder="Name" value={form.name} onChange={handleChange} />
+            <Input name="email" placeholder="Email" value={form.email} onChange={handleChange} />
+            <Input name="phone" placeholder="Phone" value={form.phone} onChange={handleChange} />
+            <Input name="experience" placeholder="Experience" value={form.experience} onChange={handleChange} />
+            <Input name="specialization" placeholder="Specialization" value={form.specialization} onChange={handleChange} />
+            <Input name="location" placeholder="Location" value={form.location} onChange={handleChange} />
+            <Input name="gps" placeholder="GPS" value={form.gps} onChange={handleChange} />
           </div>
 
-          <Button onClick={handleSubmit} disabled={loading} className="w-full bg-primary text-primary-foreground">
-            {loading ? "Registering..." : t("handlerSignup.submit")}
+          <Button onClick={handleSubmit} disabled={loading} className="w-full">
+            {loading ? "Registering..." : "Register"}
           </Button>
         </CardContent>
       </Card>
