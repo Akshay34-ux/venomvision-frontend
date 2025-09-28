@@ -26,7 +26,7 @@ export default function HandlerSignup() {
   };
 
   const handleSubmit = async () => {
-    const baseUrl = import.meta.env.VITE_API_URL;
+    const baseUrl = import.meta.env.VITE_API_URL?.replace(/\/+$/, "") || "http://localhost:5001";
 
     if (!baseUrl) {
       alert("❌ Backend server not configured. Please set VITE_API_URL.");
