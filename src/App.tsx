@@ -17,6 +17,7 @@ import NotFound from "./pages/NotFound";
 import HandlerSignup from "./pages/HandlerSignup";
 import HandlerLogin from "./pages/HandlerLogin";
 import HandlerDashboard from "./pages/HandlerDashboard";
+import SetPasswordPage from "./pages/SetPasswordPage";
 
 
 const queryClient = new QueryClient();
@@ -45,6 +46,7 @@ const App = () => (
           <Route path="/register-handler" element={<HandlerSignup />} />
           <Route path="/handler-login" element={<HandlerLogin />} />
           <Route path="/handler-dashboard" element={<HandlerDashboard />} />
+          <Route path="/set-password/:token" element={<SetPasswordPage />} />
 
           {/* 404 catch-all */}
           <Route path="*" element={<NotFound />} />

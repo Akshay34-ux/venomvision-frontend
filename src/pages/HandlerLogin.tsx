@@ -1,84 +1,43 @@
-// frontend/src/pages/HandlerSignup.tsx
+// frontend/src/pages/HandlerLogin.tsx
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 
-import { Header } from "@/components/Header";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-
-export default function HandlerSignup() {
-  const navigate = useNavigate();
-  const { t } = useTranslation();
-
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    experience: "",
-    specialization: "",
-    location: "",
-    gps: "",
-  });
-
+export default function HandlerLogin() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5001";
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async () => {
+  const login = async () => {
     try {
       setLoading(true);
-      const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5001";
-
-      const res = await axios.post(`${baseUrl}/api/handlers/register`, form);
-
+      const res = await axios.post(`${baseUrl}/api/handlers/auth/login`, { email, password });
       if (res.data.success) {
-        alert("✅ Registration submitted. Waiting for admin approval.");
-        navigate("/"); // or redirect to landing
+        // save token
+        localStorage.setItem("token", res.data.token);
+        alert("Login success");
+        navigate("/handler-dashboard");
       } else {
-        alert("❌ Registration failed.");
+        alert(res.data.message || "Login failed");
       }
     } catch (err: any) {
-      console.error(err);
-      alert("⚠️ Error submitting registration. Try again.");
+      console.error("Login error:", err);
+      alert(err?.response?.data?.message || "Server error");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="p-4">
-      <Header
-        title={t("handlerSignup.title")}
-        tagline={t("handlerSignup.tagline", { defaultValue: "Join VenomVision as a certified handler" })}
-        showLanguageToggle={true}
-      />
-
-      <Card className="mt-4 shadow-strong max-w-3xl mx-auto">
-        <CardHeader>
-          <CardTitle>{t("handlerSignup.title")}</CardTitle>
-        </CardHeader>
-
-        <CardContent className="space-y-4">
-          <div className="grid md:grid-cols-2 gap-4">
-            <Input name="name" placeholder={t("handlerSignup.name")} value={form.name} onChange={handleChange} />
-            <Input name="email" placeholder={t("handlerSignup.email")} value={form.email} onChange={handleChange} />
-            <Input name="phone" placeholder={t("handlerSignup.phone")} value={form.phone} onChange={handleChange} />
-            <Input name="experience" placeholder={t("handlerSignup.experience")} value={form.experience} onChange={handleChange} />
-            <Input name="specialization" placeholder={t("handlerSignup.specialization")} value={form.specialization} onChange={handleChange} />
-            <Input name="location" placeholder={t("handlerSignup.location")} value={form.location} onChange={handleChange} />
-            <Input name="gps" placeholder={t("handlerSignup.gps")} value={form.gps} onChange={handleChange} />
-          </div>
-
-          <Button onClick={handleSubmit} disabled={loading} className="w-full bg-primary text-primary-foreground">
-            {loading ? "Registering..." : t("handlerSignup.submit")}
-          </Button>
-        </CardContent>
-      </Card>
+    <div className="p-6 max-w-md mx-auto">
+      <h2 className="text-xl font-bold mb-4">Handler Login</h2>
+      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="block w-full mb-2 p-2 border rounded" />
+      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="block w-full mb-4 p-2 border rounded" />
+      <button onClick={login} disabled={loading} className="px-4 py-2 bg-primary text-white rounded">
+        {loading ? "Logging in..." : "Login"}
+      </button>
     </div>
   );
 }
