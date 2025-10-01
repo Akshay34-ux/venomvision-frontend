@@ -2,25 +2,31 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function HandlerLogin() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5001";
+  const [form, setForm] = useState({ email: "", password: "" });
+  const [loading, setLoading] = useState(false);
 
-  const login = async () => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleLogin = async () => {
     try {
       setLoading(true);
-      const res = await axios.post(`${baseUrl}/api/handlers/auth/login`, { email, password });
+      const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5001";
+      const res = await axios.post(`${baseUrl}/api/handlers/auth/login`, form);
+
       if (res.data.success) {
-        // save token
-        localStorage.setItem("token", res.data.token);
-        alert("Login success");
+        localStorage.setItem("handlerToken", res.data.token); // save JWT
+        alert("✅ Login successful");
         navigate("/handler-dashboard");
       } else {
-        alert(res.data.message || "Login failed");
+        alert("❌ Invalid credentials");
       }
     } catch (err: any) {
       console.error("Login error:", err);
@@ -31,13 +37,31 @@ export default function HandlerLogin() {
   };
 
   return (
-    <div className="p-6 max-w-md mx-auto">
-      <h2 className="text-xl font-bold mb-4">Handler Login</h2>
-      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className="block w-full mb-2 p-2 border rounded" />
-      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="block w-full mb-4 p-2 border rounded" />
-      <button onClick={login} disabled={loading} className="px-4 py-2 bg-primary text-white rounded">
-        {loading ? "Logging in..." : "Login"}
-      </button>
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <Card className="w-full max-w-md shadow-lg">
+        <CardHeader>
+          <CardTitle className="text-xl font-bold">Handler Login</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={handleChange}
+          />
+          <Input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={handleChange}
+          />
+          <Button onClick={handleLogin} disabled={loading} className="w-full">
+            {loading ? "Logging in..." : "Login"}
+          </Button>
+        </CardContent>
+      </Card>
     </div>
   );
 }
