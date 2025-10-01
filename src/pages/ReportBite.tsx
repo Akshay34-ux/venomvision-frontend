@@ -148,7 +148,7 @@ export default function ReportBite() {
                     readOnly
                   />
                   <Button onClick={handleGetLocation} variant="outline">
-                    📍 {t("reportBite.getLocation")}
+                     {t("reportBite.getLocation")}
                   </Button>
                 </div>
               </div>
