@@ -1,8 +1,8 @@
 // frontend/src/pages/HandlerLogin.tsx
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import axios from "axios";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -11,53 +11,61 @@ export default function HandlerLogin() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
 
+  const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5001";
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleLogin = async () => {
+  const handleSubmit = async () => {
+    if (!form.email || !form.password) return alert("⚠️ Fill all fields");
+
     try {
       setLoading(true);
-      const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5001";
       const res = await axios.post(`${baseUrl}/api/handlers/auth/login`, form);
 
-      if (res.data.success) {
-        localStorage.setItem("handlerToken", res.data.token); // save JWT
-        alert("✅ Login successful");
+      if (res.data.success && res.data.token) {
+        localStorage.setItem("handlerToken", res.data.token);
         navigate("/handler-dashboard");
       } else {
-        alert("❌ Invalid credentials");
+        alert("❌ " + (res.data.message || "Login failed"));
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error("Login error:", err);
-      alert(err?.response?.data?.message || "Server error");
+      alert("⚠️ Login failed. Try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <Card className="w-full max-w-md shadow-lg">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <Card className="w-full max-w-md shadow-lg border border-gray-200">
         <CardHeader>
-          <CardTitle className="text-xl font-bold">Handler Login</CardTitle>
+          <CardTitle className="text-center text-2xl font-bold">
+            🐍 Handler Login
+          </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <Input
-            type="email"
             name="email"
+            type="email"
             placeholder="Email"
             value={form.email}
             onChange={handleChange}
           />
           <Input
-            type="password"
             name="password"
+            type="password"
             placeholder="Password"
             value={form.password}
             onChange={handleChange}
           />
-          <Button onClick={handleLogin} disabled={loading} className="w-full">
+          <Button
+            onClick={handleSubmit}
+            disabled={loading}
+            className="w-full bg-primary text-primary-foreground"
+          >
             {loading ? "Logging in..." : "Login"}
           </Button>
         </CardContent>
