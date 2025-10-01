@@ -49,31 +49,31 @@ export default function LandingPage() {
           <p className="text-lg md:text-xl max-w-2xl mx-auto opacity-90 mb-6">
             {t("landing.subtitle")}
           </p>
-          <div className="flex justify-center gap-4">
-            <Button
-              size="lg"
-              className="bg-card text-foreground hover:bg-accent"
-              onClick={() => navigate("/index")}
-            >
-              {t("landing.getStarted")}
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="bg-card text-foreground hover:bg-accent"
-              onClick={() => navigate("/handler-login")}
-            >
-              {t("landing.loginHandler")}
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="bg-card text-foreground hover:bg-accent"
-              onClick={() => navigate("/register-handler")}
-            >
-              {t("landing.registerHandler")}
-            </Button>
-          </div>
+          <div className="flex flex-col md:flex-row justify-center gap-4">
+  <Button
+    size="lg"
+    className="bg-card text-foreground hover:bg-accent"
+    onClick={() => navigate("/index")}
+  >
+    {t("landing.getStarted")}
+  </Button>
+  <Button
+    variant="outline"
+    size="lg"
+    className="bg-card text-foreground hover:bg-accent"
+    onClick={() => navigate("/handler-login")}
+  >
+    {t("landing.loginHandler")}
+  </Button>
+  <Button
+    variant="outline"
+    size="lg"
+    className="bg-card text-foreground hover:bg-accent"
+    onClick={() => navigate("/register-handler")}
+  >
+    {t("landing.registerHandler")}
+  </Button>
+</div>
         </div>
       </section>
 
