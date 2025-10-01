@@ -256,16 +256,7 @@ const Index = () => {
         </Card>
 
         {/* Register as Handler Button */}
-        <div className="text-center mt-8">
-          <Button
-            size="lg"
-            className="bg-gradient-primary text-primary-foreground hover:opacity-90"
-            onClick={() => navigate("/register-handler")}
-          >
-            <UserPlus className="h-5 w-5 mr-2" />
-            Register as Handler
-          </Button>
-        </div>
+        
       </div>
     </div>
   );

@@ -65,6 +65,14 @@ export default function LandingPage() {
             >
               {t("landing.loginHandler")}
             </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="bg-card text-foreground hover:bg-accent"
+              onClick={() => navigate("/register-handler")}
+            >
+              {t("landing.registerHandler")}
+            </Button>
           </div>
         </div>
       </section>

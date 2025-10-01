@@ -78,20 +78,21 @@
   
   
   "landing": {
-    "title": "🐍 VenomVision",
-    "subtitle": "Instantly identify snakes, report bites, and connect with certified handlers — all in one app.",
-    "getStarted": "Get Started",
-    "loginHandler": "Login as Handler",
-    "features": {
-      "identifyTitle": "Identify Snakes",
-      "identifyDesc": "Upload or capture an image to instantly identify snake species.",
-      "reportTitle": "Report Bites",
-      "reportDesc": "Submit bite incidents with GPS to get emergency guidance fast.",
-      "findTitle": "Find Handlers",
-      "findDesc": "Connect with nearby certified snake handlers for rescue."
-    },
-    "footer": "All rights reserved."
-  }
+  "title": "🐍 VenomVision",
+  "subtitle": "Instantly identify snakes, report bites, and connect with certified handlers — all in one app.",
+  "getStarted": "Get Started",
+  "loginHandler": "Login as Handler",
+  "registerHandler": "Register as Handler",
+  "features": {
+    "identifyTitle": "Identify Snakes",
+    "identifyDesc": "Upload or capture an image to instantly identify snake species.",
+    "reportTitle": "Report Bites",
+    "reportDesc": "Submit bite incidents with GPS to get emergency guidance fast.",
+    "findTitle": "Find Handlers",
+    "findDesc": "Connect with nearby certified snake handlers for rescue."
+  },
+  "footer": "All rights reserved."
+}
 }
 
   
