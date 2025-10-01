@@ -3,6 +3,12 @@ import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+// UI components
+import { Header } from "@/components/Header";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+
 export default function SetPasswordPage() {
   const { token } = useParams<{ token: string }>();
   const navigate = useNavigate();
@@ -16,7 +22,10 @@ export default function SetPasswordPage() {
     try {
       setLoading(true);
       const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5001";
-      const res = await axios.post(`${baseUrl}/api/handlers/auth/set-password/${token}`, { password });
+      const res = await axios.post(
+        `${baseUrl}/api/handlers/auth/set-password/${token}`,
+        { password }
+      );
       if (res.data.success) {
         alert("✅ Password set. Please login.");
         navigate("/handler-login");
@@ -32,25 +41,51 @@ export default function SetPasswordPage() {
   };
 
   return (
-    <div className="p-6 max-w-md mx-auto">
-      <h2 className="text-xl font-bold mb-4">Set your password</h2>
-      <input
-        type="password"
-        className="block w-full mb-2 p-2 border rounded"
-        placeholder="New password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
+    <div className="flex flex-col min-h-screen bg-background text-foreground">
+      {/* ✅ Header */}
+      <Header
+        title="🔒 Secure Your Account"
+        tagline="Set your password to start using VenomVision"
+        showLanguageToggle={false}
       />
-      <input
-        type="password"
-        className="block w-full mb-4 p-2 border rounded"
-        placeholder="Confirm password"
-        value={confirm}
-        onChange={(e) => setConfirm(e.target.value)}
-      />
-      <button onClick={submit} disabled={loading} className="px-4 py-2 bg-primary text-white rounded">
-        {loading ? "Setting..." : "Set Password"}
-      </button>
+
+      {/* ✅ Form Section */}
+      <div className="flex-1 flex justify-center items-center px-4">
+        <Card className="w-full max-w-md shadow-lg">
+          <CardHeader>
+            <CardTitle className="text-xl font-bold text-center">
+              Set Your Password
+            </CardTitle>
+          </CardHeader>
+
+          <CardContent className="space-y-4">
+            <Input
+              type="password"
+              placeholder="New password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Input
+              type="password"
+              placeholder="Confirm password"
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
+            />
+            <Button
+              onClick={submit}
+              disabled={loading}
+              className="w-full bg-primary text-primary-foreground"
+            >
+              {loading ? "Setting..." : "Set Password"}
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* ✅ Footer */}
+      <footer className="py-6 text-center text-muted-foreground text-sm border-t">
+        © {new Date().getFullYear()} VenomVision. All rights reserved.
+      </footer>
     </div>
   );
 }
