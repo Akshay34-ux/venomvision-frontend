@@ -5,10 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import { useTranslation } from "react-i18next";
-import { Header } from "@/components/Header"; // ✅ same as landing
+import { Header } from "@/components/Header";
 import "leaflet/dist/leaflet.css";
 
 // ✅ Fix Leaflet marker icons
@@ -18,6 +18,13 @@ L.Icon.Default.mergeOptions({
   iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
   shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
 });
+
+// ✅ Component to recenter map when coords change
+function RecenterMap({ coords }: { coords: [number, number] }) {
+  const map = useMap();
+  map.setView(coords, 13);
+  return null;
+}
 
 export default function HandlerSignup() {
   const navigate = useNavigate();
@@ -40,7 +47,7 @@ export default function HandlerSignup() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // ✅ Get current location
+  // ✅ Get current location + update form + move map
   const handleGetLocation = () => {
     if (!navigator.geolocation) {
       alert("❌ Geolocation not supported by your browser.");
@@ -50,7 +57,8 @@ export default function HandlerSignup() {
       (pos) => {
         const lat = pos.coords.latitude;
         const lng = pos.coords.longitude;
-        setCoords([lat, lng]);
+        const newCoords: [number, number] = [lat, lng];
+        setCoords(newCoords);
         setForm((prev) => ({ ...prev, gps: `${lat}, ${lng}` }));
       },
       () => alert("⚠️ Unable to fetch location. Please enable GPS."),
@@ -82,7 +90,7 @@ export default function HandlerSignup() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* ✅ Header (same style as LandingPage) */}
+      {/* ✅ Header */}
       <Header
         title={t("handlerSignup.title", "🐍 Join VenomVision")}
         tagline={t("handlerSignup.tagline", "Become a certified snake handler")}
@@ -130,11 +138,13 @@ export default function HandlerSignup() {
             <Marker position={coords}>
               <Popup>📍 {t("handlerSignup.mapPopup", "Your Selected Location")}</Popup>
             </Marker>
+            {/* ✅ Automatically recenters map */}
+            <RecenterMap coords={coords} />
           </MapContainer>
         </div>
       </div>
 
-      {/* ✅ Footer (same style as LandingPage) */}
+      {/* ✅ Footer */}
       <footer className="py-6 text-center text-muted-foreground text-sm border-t">
         © {new Date().getFullYear()} VenomVision. {t("landing.footer")}
       </footer>
